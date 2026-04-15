@@ -74,9 +74,11 @@ PJ種別とは別に、このPJで発生する「活動」を判定する。1つ
 ```
 .claude/
 ├── CLAUDE.md              # PJ概要と作業ルール（50行目安、最大100行）
-├── roadmap.md             # PJ全体のフェーズ構成と進捗
-├── active-task.md         # 現在の作業状態（compaction復元用）
-├── decisions.md           # 確定事項ログ（specをまたいで残る決定記録）
+├── state/                 # セッション引き継ぎファイル
+│   ├── roadmap.md         # PJ全体のフェーズ構成と進捗
+│   ├── active-task.md     # 現在の作業状態（compaction復元用）
+│   ├── decisions.md       # 確定事項ログ（specをまたいで残る決定記録）
+│   └── harness-log.jsonl  # 違反ログ（中長期PJのみ）
 ├── settings.json          # パーミッション + hooks
 ├── rules/                 # 常時ロードされるルール
 │   ├── quality-gates.md   # 品質チェック使用ルール（全PJ）
@@ -87,8 +89,7 @@ PJ種別とは別に、このPJで発生する「活動」を判定する。1つ
 │   ├── pre-compact.sh     # compaction 直前の dialogue+tool_result を .claude/snapshots/ に保存
 │   └── stop-guardian.sh   # Stop hook（中長期PJのみ）
 ├── snapshots/             # PreCompact hook が出力（.gitignore 対象）
-├── agents/                # PJ固有エージェント
-└── harness-log.jsonl      # 違反ログ（中長期PJのみ）
+└── agents/                # PJ固有エージェント
 ```
 
 ### 4. CLAUDE.md の内容（50行目安、最大100行）
@@ -115,17 +116,17 @@ PJ種別とは別に、このPJで発生する「活動」を判定する。1つ
 
 #### ロードマップとspecの2段構造
 
-1. **ロードマップ**: PJ全体のフェーズ分け。`roadmap.md` で管理する
+1. **ロードマップ**: PJ全体のフェーズ分け。`state/roadmap.md` で管理する
 2. **spec**: 各フェーズの詳細計画。`/anchor create <name>` で作成する
 
-ロードマップはPJ開始時にユーザーと合意し、`roadmap.md` に書く。
+ロードマップはPJ開始時にユーザーと合意し、`state/roadmap.md` に書く。
 各フェーズに着手する時にspecを書き、**1つのspecを終えるごとにセッションを切る。**
 
 #### specの規模判定
 
 | 規模 | 判定基準 | 必要なspec |
 |------|---------|------------------|
-| 小 | バグ修正、1ファイルの微調整、typo修正 | 不要。active-task.md の更新のみ |
+| 小 | バグ修正、1ファイルの微調整、typo修正 | 不要。state/active-task.md の更新のみ |
 | 中 | 機能追加、調査タスク、複数ファイル変更 | 軽量spec（目的/スコープ/成功条件/進め方）→ 着手 |
 | 大 | 新機能設計、アーキテクチャ変更、戦略立案 | フルspec → **ユーザーレビュー・合意** → 着手 |
 
@@ -169,7 +170,7 @@ PJ種別に応じたパーミッション + hooks を設定:
 
 目的は「次セッション Claude のパフォーマンス維持」。PreCompact で transcript から
 dialogue + tool_result を抽出して `.claude/snapshots/` に保存。PostCompact hook は使わない
-（active-task.md / decisions.md は compaction で消えないので注入不要）。
+（state/active-task.md / state/decisions.md は compaction で消えないので注入不要）。
 
 ```json
 {
@@ -235,9 +236,9 @@ PreCompact hook の中身と依存（`jq`）、`.gitignore` に `.claude/snapsho
 
 1. **hooks/** — pre-compact.sh（状態保存）+ session-compact.sh（コンテキスト再注入）
 2. **skills/anchor/** — コンテキスト固定スキル（PJ種別に応じたテンプレート）
-3. **roadmap.md** — PJ全体のフェーズ構成と進捗
-4. **active-task.md** — 現在の作業状態テンプレート
-5. **decisions.md** — 確定事項ログ（specをまたいで残る決定記録）
+3. **state/roadmap.md** — PJ全体のフェーズ構成と進捗
+4. **state/active-task.md** — 現在の作業状態テンプレート
+5. **state/decisions.md** — 確定事項ログ（specをまたいで残る決定記録）
 
 ### 8.5. ハーネス協働進化の構築（ステップ8完了後）
 
@@ -245,7 +246,7 @@ PreCompact hook の中身と依存（`jq`）、`.gitignore` に `.claude/snapsho
 
 **中長期PJのみ:**
 1. **hooks/stop-guardian.sh** — Stop hook（検知・報告）
-2. **harness-log.jsonl** — 違反ログ（空ファイル）
+2. **state/harness-log.jsonl** — 違反ログ（空ファイル）
 3. **rules/harness-evolution.md** — 協働進化ルール
 
 **全PJ:**
