@@ -32,7 +32,7 @@
 - .claude/agents/{name}.md — {用途の説明}
 
 ### このPJで使えるグローバルエージェント・スキル
-（phase-agent-table.md の該当テーブルを表示）
+（reference/agent-table.md の該当テーブルを表示）
 
 ### 推奨ワークフロー
 1. 作業開始時: active-task.md を更新
