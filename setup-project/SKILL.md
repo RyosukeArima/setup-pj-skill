@@ -202,11 +202,11 @@ dialogue + tool_result を抽出して `.claude/snapshots/` に保存。PostComp
 ```
 
 PreCompact hook の中身と依存（`jq`）、`.gitignore` に `.claude/snapshots/` を追加する件は
-`phase-compaction.md` の「生成物3〜5」を参照。
+`reference/compaction.md` の「生成物3〜5」を参照。
 
 **hooks（中長期PJのみ — ハーネス協働進化）:**
 
-上記に加え、Stop hookをマージする。詳細は `phase-harness-evolution.md` の生成物5を参照。
+上記に加え、Stop hookをマージする。詳細は `reference/harness-evolution.md` の生成物5を参照。
 
 ### 6. .claudeignore
 
@@ -220,10 +220,10 @@ PreCompact hook の中身と依存（`jq`）、`.gitignore` に `.claude/snapsho
 
 **全PJ共通:**
 - `rules/chrome-tools.md` — Claude in Chrome（`mcp__claude-in-chrome__*`）はユーザーの明示的指示がない限り使用禁止。ToolSearchでのロードも指示なしでは行わない。
-- `rules/quality-gates.md` — 成果物→品質チェックの対応表。詳細は `phase-harness-evolution.md` の生成物4を参照。
+- `rules/quality-gates.md` — 成果物→品質チェックの対応表。詳細は `reference/harness-evolution.md` の生成物4を参照。
 
 **中長期PJのみ:**
-- `rules/harness-evolution.md` — 協働進化ルール。詳細は `phase-harness-evolution.md` の生成物3を参照。
+- `rules/harness-evolution.md` — 協働進化ルール。詳細は `reference/harness-evolution.md` の生成物3を参照。
 
 **PJ種別固有:**
 - **開発PJ:** TypeScript検出 → グローバルの `typescript.md` 参照、Python検出 → `python.md` 参照、React検出 → `react.md` 参照。PJ固有の規約があれば追加。
@@ -232,7 +232,7 @@ PreCompact hook の中身と依存（`jq`）、`.gitignore` に `.claude/snapsho
 
 ### 8. Compaction耐性の構築
 
-`phase-compaction.md` を参照し、以下を生成する:
+`reference/compaction.md` を参照し、以下を生成する:
 
 1. **hooks/** — pre-compact.sh（状態保存）+ session-compact.sh（コンテキスト再注入）
 2. **skills/anchor/** — コンテキスト固定スキル（PJ種別に応じたテンプレート）
@@ -242,7 +242,7 @@ PreCompact hook の中身と依存（`jq`）、`.gitignore` に `.claude/snapsho
 
 ### 8.5. ハーネス協働進化の構築（ステップ8完了後）
 
-`phase-harness-evolution.md` を参照し、以下を生成する:
+`reference/harness-evolution.md` を参照し、以下を生成する:
 
 **中長期PJのみ:**
 1. **hooks/stop-guardian.sh** — Stop hook（検知・報告）
@@ -256,12 +256,12 @@ PreCompact hook の中身と依存（`jq`）、`.gitignore` に `.claude/snapsho
 
 ### 9. PJ固有エージェントの作成判断
 
-詳細は `phase-agent-template.md` を参照して判断・作成する。
+詳細は `reference/agent-template.md` を参照して判断・作成する。
 
 ### 10. 活動タイプに応じたエージェント・スキル活用ガイド
 
-`phase-agent-table.md` を参照し、ステップ2で判定した活動タイプに該当するテーブルのみをCLAUDE.mdに転記する。
+`reference/agent-table.md` を参照し、ステップ2で判定した活動タイプに該当するテーブルのみをCLAUDE.mdに転記する。
 
 ### 11. 完了報告
 
-`phase-completion.md` のフォーマットに従い報告する。
+`reference/completion.md` のフォーマットに従い報告する。
